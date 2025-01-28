@@ -1,5 +1,5 @@
 <?php
-$server = "bluebird-db-container";  // 컨테이너 이름 사용
+$server = "bluebird-db-service";  // 컨테이너 이름 사용
 $username = "bluebird_user";
 $password = "password";
 $database = "bluebirdhotel";

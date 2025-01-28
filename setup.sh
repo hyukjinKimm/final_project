@@ -30,7 +30,7 @@ echo "Enter your Mysql root password or just press Enter if not configured yet"
 mysql -u root -p < $DIR/bluebirdhotel.sql
 
 # Copy project to /var/www/html
-cp -r $DIR /var/www/html/
+#cp -r $DIR /var/www/html/
 
 # restart apache
 systemctl restart httpd
