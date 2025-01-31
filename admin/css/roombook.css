@@ -87,7 +87,7 @@ i{
 #guestdetailpanel .guestdetailpanelform{
     height: 620px;
     width: 1170px;
-    background-color: #ccdff4;
+    background-color: white;
     border-radius: 10px;  
     /* temp */
     position: relative;
@@ -133,7 +133,7 @@ a{
 
 .guestdetailpanelform .middle .guestinfo{
     width: 100%;
-    background-color: rgba(155, 187, 255, 0.752);
+    background-color: white;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -142,7 +142,7 @@ a{
 .guestdetailpanelform .middle .reservationinfo{
     
     width: 100%;
-    background-color: rgba(155, 187, 255, 0.752);
+    background-color: white;
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -164,7 +164,7 @@ a{
 .middle input,.selectinput{
     width: 100%;
     border: none;
-    background-color: #d1d7ff;
+    background-color: #e6eeff;
     padding: 10px;
     margin: 10px 0;
     border-radius: 20px;
