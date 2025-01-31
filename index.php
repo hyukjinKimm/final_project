@@ -21,7 +21,7 @@ session_start();
     <!-- loading bar -->
     <script src="https://cdn.jsdelivr.net/npm/pace-js@latest/pace.min.js"></script>
     <link rel="stylesheet" href="./css/flash.css">
-    <title>Hotel blue bird</title>
+    <title>메타넷 병원</title>
 </head>
 
 <body>
