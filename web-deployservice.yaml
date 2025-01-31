@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: bluebird-web-container
-          image: registry.demo.io:5000/php/web:v5
+          image: registry.demo.io:5000/php/web:v1
           ports:
             - containerPort: 80
           env:

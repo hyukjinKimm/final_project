@@ -1,4 +1,6 @@
 FROM php:8.0-apache
+RUN sed -i 's/http:\/\/deb.debian.org/http:\/\/ftp.kr.debian.org/g' /etc/apt/sources.list && \
+    apt-get update && apt-get install -y default-mysql-client
 
 # PHP 모듈 설치 (필요한 경우 추가)
 RUN docker-php-ext-install mysqli pdo pdo_mysql
