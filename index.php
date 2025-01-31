@@ -29,16 +29,16 @@ session_start();
     <section id="carouselExampleControls" class="carousel slide carousel_section" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img class="carousel-image" src="./image/hotel1.jpg">
+                <img class="carousel-image" src="./image/hospital1.jpg">
             </div>
             <div class="carousel-item">
-                <img class="carousel-image" src="./image/hotel2.jpg">
+                <img class="carousel-image" src="./image/hospital2.jpg">
             </div>
             <div class="carousel-item">
-                <img class="carousel-image" src="./image/hotel3.jpg">
+                <img class="carousel-image" src="./image/hospital3.jpg">
             </div>
             <div class="carousel-item">
-                <img class="carousel-image" src="./image/hotel4.jpg">
+                <img class="carousel-image" src="./image/hospital4.jpg">
             </div>
         </div>
     </section>
@@ -47,22 +47,22 @@ session_start();
     <section id="auth_section">
 
         <div class="logo">
-            <img class="bluebirdlogo" src="./image/bluebirdlogo.png" alt="logo">
-            <p>BLUEBIRD</p>
+            <img class="bluebirdlogo" src="./image/metanetlogo.jpg" alt="logo">
+            <p>메타넷 병원 예약 시스템</p>
         </div>
 
         <div class="auth_container">
             <!--============ login =============-->
 
             <div id="Log_in">
-                <h2>Log In</h2>
+                <h2>로그인</h2>
                 <div class="role_btn">
-                    <div class="btns active">User</div>
-                    <div class="btns">Staff</div>
+                    <div class="btns active">환자</div>
+                    <div class="btns">직원</div>
                 </div>
 
                 <!-- // ==userlogin== -->
-                <?php 
+                <?php
                 if (isset($_POST['user_login_submit'])) {
                     $Email = $_POST['Email'];
                     $Password = $_POST['Password'];
@@ -88,25 +88,26 @@ session_start();
                 <form class="user_login authsection active" id="userlogin" action="" method="POST">
                     <div class="form-floating">
                         <input type="text" class="form-control" name="Username" placeholder=" ">
-                        <label for="Username">Username</label>
+                        <label for="Username">아이디</label>
                     </div>
                     <div class="form-floating">
                         <input typuser_logine="email" class="form-control" name="Email" placeholder=" ">
-                        <label for="Email">Email</label>
+                        <label for="Email">이메일</label>
                     </div>
                     <div class="form-floating">
                         <input type="password" class="form-control" name="Password" placeholder=" ">
-                        <label for="Password">Password</label>
+                        <label for="Password">비밀번호</label>
                     </div>
-                    <button type="submit" name="user_login_submit" class="auth_btn">Log in</button>
+
+                    <button type="submit" name="user_login_submit" class="auth_btn">로그인</button>
 
                     <div class="footer_line">
-                        <h6>Don't have an account? <span class="page_move_btn" onclick="signuppage()">sign up</span></h6>
+                        <h6>아이디가 없으십니까? <span class="page_move_btn" onclick="signuppage()">회원가입</span></h6>
                     </div>
                 </form>
-                
+
                 <!-- == Emp Login == -->
-                <?php              
+                <?php
                     if (isset($_POST['Emp_login_submit'])) {
                         $Email = $_POST['Emp_Email'];
                         $Password = $_POST['Emp_Password'];
@@ -118,9 +119,9 @@ session_start();
                             $_SESSION['usermail']=$Email;
                             $Email = "";
                             $Password = "";
-                            
-			    header("Location: admin/admin.php");
-			    exit();
+
+                            header("Location: admin/admin.php");
+                            exit();
                         } else {
                             echo "<script>swal({
                                 title: 'Something went wrong',
@@ -129,23 +130,23 @@ session_start();
                             </script>";
                         }
                     }
-                ?> 
+                ?>
                 <form class="employee_login authsection" id="employeelogin" action="" method="POST">
                     <div class="form-floating">
                         <input type="email" class="form-control" name="Emp_Email" placeholder=" ">
-                        <label for="floatingInput">Email</label>
+                        <label for="floatingInput">이메일</label>
                     </div>
                     <div class="form-floating">
                         <input type="password" class="form-control" name="Emp_Password" placeholder=" ">
-                        <label for="floatingPassword">Password</label>
+                        <label for="floatingPassword">비밀번호</label>
                     </div>
-                    <button type="submit" name="Emp_login_submit" class="auth_btn">Log in</button>
+                    <button type="submit" name="Emp_login_submit" class="auth_btn">로그인</button>
                 </form>
-                
+
             </div>
 
             <!--============ signup =============-->
-            <?php       
+            <?php
                 if (isset($_POST['user_signup_submit'])) {
                     $Username = $_POST['Username'];
                     $Email = $_POST['Email'];
@@ -163,7 +164,7 @@ session_start();
                         if ($Password == $CPassword) {
                             $sql = "SELECT * FROM signup WHERE Email = '$Email'";
                             $result = mysqli_query($conn, $sql);
-    
+
                             if ($result->num_rows > 0) {
                                 echo "<script>swal({
                                     title: 'Email already exits',
@@ -173,7 +174,7 @@ session_start();
                             } else {
                                 $sql = "INSERT INTO signup (Username,Email,Password) VALUES ('$Username', '$Email', '$Password')";
                                 $result = mysqli_query($conn, $sql);
-    
+
                                 if ($result) {
                                     $_SESSION['usermail']=$Email;
                                     $Username = "";
@@ -181,7 +182,7 @@ session_start();
                                     $Password = "";
                                     $CPassword = "";
                                     header("Location: home.php");
-				    exit();
+                                    exit();
                                 } else {
                                     echo "<script>swal({
                                         title: 'Something went wrong',
@@ -198,34 +199,42 @@ session_start();
                             </script>";
                         }
                     }
-                    
+
                 }
             ?>
             <div id="sign_up">
-                <h2>Sign Up</h2>
+                <h2>회원가입</h2>
 
                 <form class="user_signup" id="usersignup" action="" method="POST">
                     <div class="form-floating">
                         <input type="text" class="form-control" name="Username" placeholder=" ">
-                        <label for="Username">Username</label>
+                        <label for="Username">이름</label>
                     </div>
                     <div class="form-floating">
                         <input type="email" class="form-control" name="Email" placeholder=" ">
-                        <label for="Email">Email</label>
+                        <label for="Email">이메일</label>
                     </div>
                     <div class="form-floating">
                         <input type="password" class="form-control" name="Password" placeholder=" ">
-                        <label for="Password">Password</label>
+                        <label for="Password">비밀번호</label>
                     </div>
                     <div class="form-floating">
                         <input type="password" class="form-control" name="CPassword" placeholder=" ">
-                        <label for="CPassword">Confirm Password</label>
+                        <label for="CPassword">비밀번호확인</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="idnum" placeholder=" ">
+                        <label for="idnum">주민등록번호</label>
+                    </div>
+                    <div class="form-floating">
+                        <input type="text" class="form-control" name="address" placeholder=" ">
+                        <label for="address">주소</label>
                     </div>
 
-                    <button type="submit" name="user_signup_submit" class="auth_btn">Sign up</button>
+                    <button type="submit" name="user_signup_submit" class="auth_btn">회원가입</button>
 
                     <div class="footer_line">
-                        <h6>Already have an account? <span class="page_move_btn" onclick="loginpage()">Log in</span></h6>
+                        <h6>이미 계정이 있으십니까? <span class="page_move_btn" onclick="loginpage()">로그인</span></h6>
                     </div>
                 </form>
             </div>
@@ -243,4 +252,3 @@ session_start();
     AOS.init();
 </script>
 </html>
-
