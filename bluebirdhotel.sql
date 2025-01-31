@@ -42,6 +42,16 @@ CREATE TABLE `emp_login` (
   `Emp_Password` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+CREATE TABLE reservation (
+    id INT AUTO_INCREMENT PRIMARY KEY,  -- 자동 증가하는 ID
+    name VARCHAR(255) NOT NULL,          -- 환자 이름
+    symptom TEXT,                        -- 증상
+    department VARCHAR(255),             -- 진료과
+    schedule DATE,                       -- 예약 날짜
+    `require` TEXT,                      -- 추가 요청 사항 (역따옴표로 감싸기)
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP  -- 예약 생성 시간
+);
+
 --
 -- Dumping data for table `emp_login`
 --
