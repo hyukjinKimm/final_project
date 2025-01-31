@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: static-data
+  name: static-data2
   labels:
     app: static-data
 spec:
