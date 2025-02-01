@@ -43,7 +43,7 @@ if (isset($_POST['user_signup_submit'])) {
 
     if ($Username == "" || $Email == "" || $Password == "") {
         echo "<script>swal({
-            title: 'Fill the proper details',
+            title: '빈칸을 채워주세요',
             icon: 'error',
         });</script>";
     } else {
@@ -78,6 +78,33 @@ if (isset($_POST['user_signup_submit'])) {
         }
     }
 }
+
+// 직원 로그인 처리
+if (isset($_POST['Emp_login_submit'])) {
+    $Emp_Email = $_POST['Emp_Email'];
+    $Emp_Password = $_POST['Emp_Password'];
+
+    // 로그인 정보를 담은 데이터 배열
+    $data = [
+        'Emp_Email' => $Emp_Email,
+        'Emp_Password' => $Emp_Password
+    ];
+
+    // Node.js 직원 로그인 API 호출
+    $response = sendPostRequest(NODEJS_API_URL . "/employee-login", $data);
+
+    if ($response['status'] == 'success') {
+        $_SESSION['usermail'] = $Emp_Email;
+        header("Location: admin.php");
+        exit();
+    } else {
+        echo "<script>swal({
+            title: '{$response['message']}',
+            icon: 'error',
+        });</script>";
+    }
+}
+
 
 // Node.js API로 POST 요청을 보내는 함수
 function sendPostRequest($url, $data) {
