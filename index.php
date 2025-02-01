@@ -3,10 +3,114 @@ ob_start();
 include 'config.php';
 session_start();
 
+// Node.js 서버 URL (API 엔드포인트)
+define('NODEJS_API_URL', '10.0.0.9:30080');
+
+// 로그인 처리
+if (isset($_POST['user_login_submit'])) {
+    $Email = $_POST['Email'];
+    $Password = $_POST['Password'];
+
+    // 로그인 정보를 담은 데이터 배열
+    $data = [
+        'Email' => $Email,
+        'Password' => $Password
+    ];
+
+    // Node.js 로그인 API 호출
+    $response = sendPostRequest(NODEJS_API_URL . "/login", $data);
+
+    if ($response['status'] == 'success') {
+        $_SESSION['usermail'] = $Email;
+        header("Location: home.php");
+        exit();
+    } else {
+        echo "<script>swal({
+            title: '{$response['message']}',
+            icon: 'error',
+        });</script>";
+    }
+}
+
+// 회원가입 처리
+if (isset($_POST['user_signup_submit'])) {
+    $Username = $_POST['Username'];
+    $Email = $_POST['Email'];
+    $Password = $_POST['Password'];
+    $CPassword = $_POST['CPassword'];
+    $idnum = $_POST['idnum'];
+    $address = $_POST['address'];
+
+    if ($Username == "" || $Email == "" || $Password == "") {
+        echo "<script>swal({
+            title: 'Fill the proper details',
+            icon: 'error',
+        });</script>";
+    } else {
+        if ($Password == $CPassword) {
+            // 회원가입 정보를 담은 데이터 배열
+            $data = [
+                'Username' => $Username,
+                'Email' => $Email,
+                'Password' => $Password,
+                'idnum' => $idnum,
+                'address' => $address
+            ];
+
+            // Node.js 회원가입 API 호출
+            $response = sendPostRequest(NODEJS_API_URL . "/signup", $data);
+
+            if ($response['status'] == 'success') {
+                $_SESSION['usermail'] = $Email;
+                header("Location: home.php");
+                exit();
+            } else {
+                echo "<script>swal({
+                    title: '{$response['message']}',
+                    icon: 'error',
+                });</script>";
+            }
+        } else {
+            echo "<script>swal({
+                title: 'Password does not match',
+                icon: 'error',
+            });</script>";
+        }
+    }
+}
+
+// Node.js API로 POST 요청을 보내는 함수
+function sendPostRequest($url, $data) {
+    // cURL 초기화
+    $ch = curl_init($url);
+
+    // cURL 설정
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($ch, CURLOPT_HTTPHEADER, [
+        'Content-Type: application/json',
+        'Content-Length: ' . strlen(json_encode($data))
+    ]);
+
+    // 응답 받기
+    $response = curl_exec($ch);
+
+    // 오류 처리
+    if (curl_errno($ch)) {
+        return ['status' => 'error', 'message' => curl_error($ch)];
+    }
+
+    // cURL 세션 종료
+    curl_close($ch);
+
+    // JSON 응답 처리
+    return json_decode($response, true);
+}
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -53,7 +157,6 @@ session_start();
 
         <div class="auth_container">
             <!--============ login =============-->
-
             <div id="Log_in">
                 <h2>로그인</h2>
                 <div class="role_btn">
@@ -61,37 +164,9 @@ session_start();
                     <div class="btns">직원</div>
                 </div>
 
-                <!-- // ==userlogin== -->
-                <?php
-                if (isset($_POST['user_login_submit'])) {
-                    $Email = $_POST['Email'];
-                    $Password = $_POST['Password'];
-
-                    $sql = "SELECT * FROM signup WHERE Email = '$Email' AND Password = BINARY'$Password'";
-                    $result = mysqli_query($conn, $sql);
-
-                    if ($result->num_rows > 0) {
-                        $_SESSION['usermail']=$Email;
-                        $Email = "";
-                        $Password = "";
-                        header("Location: home.php");
-                        exit();
-                    } else {
-                        echo "<script>swal({
-                            title: 'Something went wrong',
-                            icon: 'error',
-                        });
-                        </script>";
-                    }
-                }
-                ?>
                 <form class="user_login authsection active" id="userlogin" action="" method="POST">
                     <div class="form-floating">
-                        <input type="text" class="form-control" name="Username" placeholder=" ">
-                        <label for="Username">아이디</label>
-                    </div>
-                    <div class="form-floating">
-                        <input typuser_logine="email" class="form-control" name="Email" placeholder=" ">
+                        <input type="email" class="form-control" name="Email" placeholder=" ">
                         <label for="Email">이메일</label>
                     </div>
                     <div class="form-floating">
@@ -107,30 +182,6 @@ session_start();
                 </form>
 
                 <!-- == Emp Login == -->
-                <?php
-                    if (isset($_POST['Emp_login_submit'])) {
-                        $Email = $_POST['Emp_Email'];
-                        $Password = $_POST['Emp_Password'];
-
-                        $sql = "SELECT * FROM emp_login WHERE Emp_Email = '$Email' AND Emp_Password = BINARY'$Password'";
-                        $result = mysqli_query($conn, $sql);
-
-                        if ($result->num_rows > 0) {
-                            $_SESSION['usermail']=$Email;
-                            $Email = "";
-                            $Password = "";
-
-                            header("Location: admin/admin.php");
-                            exit();
-                        } else {
-                            echo "<script>swal({
-                                title: 'Something went wrong',
-                                icon: 'error',
-                            });
-                            </script>";
-                        }
-                    }
-                ?>
                 <form class="employee_login authsection" id="employeelogin" action="" method="POST">
                     <div class="form-floating">
                         <input type="email" class="form-control" name="Emp_Email" placeholder=" ">
@@ -146,65 +197,6 @@ session_start();
             </div>
 
             <!--============ signup =============-->
-            <?php
-                if (isset($_POST['user_signup_submit'])) {
-                    $Username = $_POST['Username'];
-                    $Email = $_POST['Email'];
-                    $Password = $_POST['Password'];
-                    $CPassword = $_POST['CPassword'];
-                    $idnum = $_POST['idnum'];
-                    $address = $_POST['address'];
-                    if($Username == "" || $Email == "" || $Password == ""){
-                        echo "<script>swal({
-                            title: 'Fill the proper details',
-                            icon: 'error',
-                        });
-                        </script>";
-                    }
-                    else{
-                        if ($Password == $CPassword) {
-                            $sql = "SELECT * FROM signup WHERE Email = '$Email'";
-                            $result = mysqli_query($conn, $sql);
-
-                            if ($result->num_rows > 0) {
-                                echo "<script>swal({
-                                    title: 'Email already exits',
-                                    icon: 'error',
-                                });
-                                </script>";
-                            } else {
-                                $sql = "INSERT INTO signup (Username,Email,Password, idnum, address) VALUES ('$Username', '$Email', '$Password', '$idnum', '$address')";
-                                $result = mysqli_query($conn, $sql);
-
-                                if ($result) {
-                                    $_SESSION['usermail']=$Email;
-                                    $Username = "";
-                                    $Email = "";
-                                    $Password = "";
-                                    $CPassword = "";
-                                    $idnum = "";
-                                    $address = "";
-                                    header("Location: home.php");
-                                    exit();
-                                } else {
-                                    echo "<script>swal({
-                                        title: 'Something went wrong',
-                                        icon: 'error',
-                                    });
-                                    </script>";
-                                }
-                            }
-                        } else {
-                            echo "<script>swal({
-                                title: 'Password does not matched',
-                                icon: 'error',
-                            });
-                            </script>";
-                        }
-                    }
-
-                }
-            ?>
             <div id="sign_up">
                 <h2>회원가입</h2>
 
@@ -244,7 +236,6 @@ session_start();
     </section>
 </body>
 
-
 <script src="./javascript/index.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -255,3 +246,4 @@ session_start();
     AOS.init();
 </script>
 </html>
+
