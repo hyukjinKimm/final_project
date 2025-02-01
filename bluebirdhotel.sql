@@ -151,16 +151,19 @@ INSERT INTO `roombook` (`id`, `Name`, `Email`, `Country`, `Phone`, `RoomType`, `
 --
 
 CREATE TABLE `signup` (
-  `UserID` int(100) NOT NULL,
+  `UserID` int(100) NOT NULL AUTO_INCREMENT,
   `Username` varchar(50) NOT NULL,
-  `Email` varchar(50) NOT NULL,
-  `Password` varchar(50) NOT NULL
+  `Email` varchar(50) NOT NULL UNIQUE,
+  `Password` varchar(255) NOT NULL,
+  `idnum` varchar(20) NOT NULL,
+  `address` varchar(255) NOT NULL,
+  PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `signup`
 --
-INSERT INTO `signup` (`UserID`, `Username`, `Email`, `Password`) VALUES
+INSERT INTO `signup` (`UserID`, `Username`, `Email`, `Password`, `123456-1234567`, `성사동`) VALUES
 (1, 'Tushar Pankhaniya', 'tusharpankhaniya2202@gmail.com', '123');
 
 -- --------------------------------------------------------
