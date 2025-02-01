@@ -33,7 +33,7 @@ spec:
       volumes:
         - name: static-data-volume
           persistentVolumeClaim:
-            claimName: static-data2  # PVC 이름
+            claimName: static-data  # PVC 이름
 ---
 apiVersion: v1
 kind: Service

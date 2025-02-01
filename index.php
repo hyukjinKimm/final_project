@@ -152,7 +152,8 @@ session_start();
                     $Email = $_POST['Email'];
                     $Password = $_POST['Password'];
                     $CPassword = $_POST['CPassword'];
-
+                    $idnum = $_POST['idnum'];
+                    $address = $_POST['address'];
                     if($Username == "" || $Email == "" || $Password == ""){
                         echo "<script>swal({
                             title: 'Fill the proper details',
@@ -172,7 +173,7 @@ session_start();
                                 });
                                 </script>";
                             } else {
-                                $sql = "INSERT INTO signup (Username,Email,Password) VALUES ('$Username', '$Email', '$Password')";
+                                $sql = "INSERT INTO signup (Username,Email,Password, idnum, address) VALUES ('$Username', '$Email', '$Password', '$idnum', '$address')";
                                 $result = mysqli_query($conn, $sql);
 
                                 if ($result) {
@@ -181,6 +182,8 @@ session_start();
                                     $Email = "";
                                     $Password = "";
                                     $CPassword = "";
+                                    $idnum = "";
+                                    $address = "";
                                     header("Location: home.php");
                                     exit();
                                 } else {
