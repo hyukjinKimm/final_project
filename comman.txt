@@ -1,4 +1,0 @@
-podman build -f Containerfile.db -t bluebird-db .
-podman run -d --name bluebird-db-container -p 3306:3306 bluebird-db
-podman build -f Containerfile.web -t bluebird-web .
-podman run -d --name bluebird-web-container -p 80:80 bluebird-web
